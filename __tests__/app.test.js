@@ -15,15 +15,21 @@ describe('backend-express-template routes', () => {
     return setup(pool);
   });
   it('creates a new user', async () => {
-    const res = await request(app).post('/api/v1/users').send(mockUser);
+    const resp = await request(app).post('/api/v1/users').send(mockUser);
     const { firstName, lastName, email } = mockUser;
-    console.log(res.body);
-    expect(res.body).toEqual({
+    expect(resp.body).toEqual({
       id: expect.any(String),
       firstName,
       lastName,
       email,
     });
+  });
+  it('signs in user', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    const resp = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ email: 'test@example.com', password: '123123' });
+    expect(resp.status).toEqual(200);
   });
   afterAll(() => {
     pool.end();
