@@ -2,13 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-
-const mockUser = {
-  firstName: 'Test',
-  lastName: 'User',
-  email: 'test@example.com',
-  password: '123123',
-};
+const mockUser = require('../data/mockUser');
 
 describe('backend-express-template routes', () => {
   beforeEach(() => {
