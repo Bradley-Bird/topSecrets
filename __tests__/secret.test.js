@@ -14,9 +14,8 @@ const registerAndLogin = async (userProps = {}) => {
   const user = await UserService.create({ ...mockUser, ...userProps });
 
   const { email } = user;
-  console.log('user', user);
+
   await agent.post('/api/v1/users/sessions').send({ email, password });
-  console.log('hello', agent, user);
 
   return [agent, user];
 };
@@ -30,9 +29,9 @@ describe('secret paths', () => {
   });
   it('displays secrets if authenticated', async () => {
     const [agent] = await registerAndLogin();
-    console.log('agent', agent);
     const resp = await agent.get('/api/v1/secrets');
-    console.log('resp', resp);
-    expect(resp.body).toEqual(secretData);
+    expect(resp.body[0].description).toEqual('DECLASSIFIED IS IN!');
+    expect(resp.body[0].title).toEqual('CLASSIFIED IS OUT');
+    expect(resp.body[1].title).toEqual('In reguards to last post');
   });
 });
